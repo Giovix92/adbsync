@@ -35,6 +35,8 @@ for line in adb_out[1:]:
 		continue
 	if '\tdevice' in line.decode('UTF-8'):
 		devices.append(line.decode('UTF-8').replace('\tdevice', ''))
+	if '\trecovery' in line.decode('UTF-8'):
+		devices.append(line.decode('UTF-8').replace('\trecovery', ''))
 	if '\toffline' in line.decode('UTF-8'):
 		bad_sn = line.decode('UTF-8').replace('\toffline', '')
 		print(f"Found an offline device with sn {bad_sn}, ignoring.")
