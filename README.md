@@ -31,6 +31,7 @@ These are the currently available functions:
 ## Requirements
 
 - Python 3.9 =>
+- alive-progress 2.1 =>
 - An UNIX system (macOS, any distro Linux)
 
 ## Tested on

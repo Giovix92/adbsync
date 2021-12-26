@@ -3,6 +3,7 @@
 import argparse
 import os, shutil, re
 import subprocess, time
+from alive_progress import alive_bar
 
 version = "v1.0"
 serial = None
@@ -128,22 +129,23 @@ if args.sync == 'device' and len(device_sync) != 0:
 	print(f"Transferring {len(device_sync)} files to your device...")
 	# Transfer to the device - we don't need to create remote folder, Android does that automatically
 	if not args.dry_run:
-		for i in range(0, len(device_sync)):
-			remote_path = '/sdcard/'+device_sync[i]
-			local_path = f'{directory}/'+device_sync[i]
-			push_args = [
-				'adb',
-				'-s',
-				f'{serial}',
-				'push',
-				f'{local_path}',
-				f'{remote_path}'
-			]
-			try:
-				subprocess.check_call(push_args, stdout=subprocess.DEVNULL)
-			except:
-				print('An error has occured while syncing files to the device. Aborting.')
-				exit(1)
+		with alive_bar(len(device_sync)) as bar:
+			for i in range(0, len(device_sync)):
+				remote_path = '/sdcard/'+device_sync[i]
+				local_path = f'{directory}/'+device_sync[i]
+				push_args = [
+					'adb',
+					'-s',
+					f'{serial}',
+					'push',
+					f'{local_path}',
+					f'{remote_path}'
+				]
+				try:
+					subprocess.check_call(push_args, stdout=subprocess.DEVNULL)
+				except:
+					print('An error has occured while syncing files to the device. Aborting.')
+					exit(1)
 elif args.sync == 'device' and len(device_sync) == 0:
 	print('No files need to be transferred!')
 
@@ -151,24 +153,26 @@ if args.sync == 'local' and len(local_sync) != 0:
 	print(f"Pulling {len(local_sync)} files from your device...")
 	# Transfer from the device - we need to create local folders aswell (heck)
 	if not args.dry_run:
-		for i in range(0, len(local_sync)):
-			remote_path = '/sdcard/'+local_sync[i]
-			local_path = f'{directory}/'+local_sync[i]
-			local_path_only = os.path.dirname(local_path)
-			os.makedirs(f'{local_path_only}', exist_ok=True)
-			pull_args = [
-				'adb',
-				'-s',
-				f'{serial}',
-				'pull',
-				f'{remote_path}',
-				f'{local_path}'
-			]
-			try:
-				subprocess.check_call(pull_args, stdout=subprocess.DEVNULL)
-			except:
-				print('An error has occured while pulling files from the device. Aborting.')
-				exit(1)
+		with alive_bar(len(local_sync)) as bar:
+			for i in range(0, len(local_sync)):
+				remote_path = '/sdcard/'+local_sync[i]
+				local_path = f'{directory}/'+local_sync[i]
+				local_path_only = os.path.dirname(local_path)
+				os.makedirs(f'{local_path_only}', exist_ok=True)
+				pull_args = [
+					'adb',
+					'-s',
+					f'{serial}',
+					'pull',
+					f'{remote_path}',
+					f'{local_path}'
+				]
+				try:
+					subprocess.check_call(pull_args, stdout=subprocess.DEVNULL)
+				except:
+					print('An error has occured while pulling files from the device. Aborting.')
+					exit(1)
+				bar()
 elif args.sync == 'local' and len(local_sync) == 0:
 	print('No files need to be pulled!')
 
