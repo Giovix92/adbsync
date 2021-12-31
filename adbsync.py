@@ -143,6 +143,7 @@ if args.sync == 'device' and len(device_sync) != 0:
 				]
 				try:
 					subprocess.check_call(push_args, stdout=subprocess.DEVNULL)
+					bar()
 				except:
 					print('An error has occured while syncing files to the device. Aborting.')
 					exit(1)
@@ -169,10 +170,10 @@ if args.sync == 'local' and len(local_sync) != 0:
 				]
 				try:
 					subprocess.check_call(pull_args, stdout=subprocess.DEVNULL)
+					bar()
 				except:
 					print('An error has occured while pulling files from the device. Aborting.')
 					exit(1)
-				bar()
 elif args.sync == 'local' and len(local_sync) == 0:
 	print('No files need to be pulled!')
 
