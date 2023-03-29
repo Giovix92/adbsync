@@ -6,11 +6,16 @@ Everytime I wanted to make a backup of my phone, or restore those files onto it,
 
 ## Features
 
-- Automatically detects a connected device (and creates its folder using its serial number).
-- Using the `--device` parameter you can specify a custom device, useful whenever you have several devices connected.
+- Automatically detects a connected device (and creates its folder using its serial number)
 - Automatically detects remote present files and local files, if any.
 - Only syncs from/to the device non-present files, speeding up backup/restore times.
-- Has a `--dry-run` function to let you know just how many files would have been copied.
+- Avoids logs/cache/hidden files, saving extra time and space
+
+## Requirements
+
+- Python 3.9 =>
+- alive-progress 2.1 =>
+- An UNIX system (macOS, any distro Linux)
 
 ## How to use it
 
@@ -27,14 +32,3 @@ These are the currently available functions:
   - `device` syncs files to the device.
 - `--dry-run`: Simulate syncing.
 - `--directory directory`: Specifies a custom backup/restore LOCAL directory.
-
-## Requirements
-
-- Python 3.9 =>
-- alive-progress 2.1 =>
-- An UNIX system (macOS, any distro Linux)
-
-## Tested on
-
-- macOS Big Sur (11.6.x), Python 3.9.9
-- macOS Monterey (12.x), Python 3.9.9
